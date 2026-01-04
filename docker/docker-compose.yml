@@ -1,0 +1,59 @@
+name: data
+services:
+  postgres:
+    env_file:
+      - /opt/docker-secrets/data.env
+    container_name: postgres
+    image: postgres
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      PGDATA: /data/postgres
+    volumes:
+      - ${DATA_ROOT}/postgres/data:/data/postgres
+      - ${DATA_ROOT}/postgres/initdb:/docker-entrypoint-initdb.d
+    networks:
+      - pangolin
+    restart: unless-stopped
+    ports:
+    - target: 5432
+      published: ${POSTGRES_PORT:-5432}
+      host_ip: ${POSTGRES_BIND_IP:-127.0.0.1}
+      protocol: tcp
+
+
+  pgadmin:
+    env_file:
+      - /opt/docker-secrets/data.env  
+    container_name: pgadmin4
+    image: dpage/pgadmin4
+    user: "${UID}:${GID}"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    volumes:
+      - ${DATA_ROOT}/pgadmin/data:/var/lib/pgadmin
+    networks:
+      - pangolin
+    restart: unless-stopped
+
+  jupyter:
+    env_file:
+      - /opt/docker-secrets/data.env
+    container_name: jupyterlab
+    networks:
+      - pangolin
+    image: quay.io/jupyter/base-notebook:latest
+    environment:
+      DOCKER_STACKS_JUPYTER_CMD: lab
+    volumes:
+      - ${DATA_ROOT}/jupyter:/home/jovyan/work
+
+
+#seaweed
+#hoppscotch
+#airflow (bind to env file for python)
+networks:
+  pangolin:
+    external: true

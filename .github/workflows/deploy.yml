@@ -1,0 +1,14 @@
+jobs:
+  sync_to_srv_data:
+    runs-on: [self-hosted, linux, x64]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Sync repo to /srv/data/gitops
+        run: |
+          mkdir -p /srv/data/gitops
+          rsync -a --delete \
+            --exclude '.git/' \
+            --exclude '.github/' \
+            "${GITHUB_WORKSPACE}/" \
+            /srv/data/gitops
