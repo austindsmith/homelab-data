@@ -3,7 +3,7 @@ services:
   postgres:
     env_file:
       - /opt/docker-secrets/data.env
-    container_name: postgres
+    container_name: data-postgres
     image: postgres
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
@@ -25,7 +25,7 @@ services:
   pgadmin:
     env_file:
       - /opt/docker-secrets/data.env  
-    container_name: pgadmin4
+    container_name: data-pgadmin4
     image: dpage/pgadmin4
     user: "${UID}:${GID}"
     environment:
@@ -41,7 +41,7 @@ services:
   jupyter:
     env_file:
       - /opt/docker-secrets/data.env
-    container_name: jupyterlab
+    container_name: data-jupyterlab
     networks:
       - pangolin
     image: quay.io/jupyter/base-notebook:latest
