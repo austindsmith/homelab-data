@@ -44,10 +44,6 @@ services:
     volumes:
       - ${DATA_ROOT}/jupyter:/home/jovyan/work
 
-
-#seaweed
-#hoppscotch
-#airflow (bind to env file for python)
 networks:
   pangolin:
     external: true
