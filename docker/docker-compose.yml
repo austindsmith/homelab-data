@@ -1,4 +1,11 @@
 name: data
+
+volumes:
+  postgres_data: {}
+  pgadmin_data: {}
+networks:
+  pangolin:
+    external: true
 services:
   postgres:
     container_name: data-postgres
@@ -44,6 +51,9 @@ services:
     volumes:
       - ${DATA_ROOT}/jupyter:/home/jovyan/work
 
+volumes:
+  postgres_data: {}
+  pgadmin_data: {}
 networks:
   pangolin:
     external: true
