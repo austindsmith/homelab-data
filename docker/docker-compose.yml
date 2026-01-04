@@ -50,10 +50,3 @@ services:
       DOCKER_STACKS_JUPYTER_CMD: lab
     volumes:
       - ${DATA_ROOT}/jupyter:/home/jovyan/work
-
-volumes:
-  postgres_data: {}
-  pgadmin_data: {}
-networks:
-  pangolin:
-    external: true
