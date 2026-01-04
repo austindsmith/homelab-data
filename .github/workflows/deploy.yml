@@ -26,4 +26,4 @@ jobs:
       - name: Docker compose up
         working-directory: /srv/data/gitops/docker
         run: |
-          docker compose --env-file /opt/docker-secrets/data.env up -d
+          docker compose --env-file /opt/docker-secrets/data.env up -d --remove-orphans
