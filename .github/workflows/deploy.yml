@@ -1,3 +1,10 @@
+name: Sync to cloud server
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
 jobs:
   sync_to_srv_data:
     runs-on: [self-hosted, linux, x64]
@@ -11,4 +18,4 @@ jobs:
             --exclude '.git/' \
             --exclude '.github/' \
             "${GITHUB_WORKSPACE}/" \
-            /srv/data/gitops
+            /srv/data/gitops/
