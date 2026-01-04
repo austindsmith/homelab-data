@@ -34,7 +34,6 @@ services:
       PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
       PGADMIN_CONFIG_SERVER_MODE: 'False'
-      PGADMIN_CONFIG_LOG_FILE: /var/lib/pgadmin/pgadmin4.log
     volumes:
       - pgadmin_data:/var/lib/pgadmin
     networks:
