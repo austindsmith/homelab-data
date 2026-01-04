@@ -1,8 +1,6 @@
 name: data
 services:
   postgres:
-    env_file:
-      - /opt/docker-secrets/data.env
     container_name: data-postgres
     image: postgres
     environment:
@@ -23,8 +21,6 @@ services:
 
 
   pgadmin:
-    env_file:
-      - /opt/docker-secrets/data.env  
     container_name: data-pgadmin4
     image: dpage/pgadmin4
     user: "${UID}:${GID}"
@@ -39,8 +35,6 @@ services:
     restart: unless-stopped
 
   jupyter:
-    env_file:
-      - /opt/docker-secrets/data.env
     container_name: data-jupyterlab
     networks:
       - pangolin
