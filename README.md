@@ -10,11 +10,13 @@ Main goal is to have a full data lakehouse stack that runs from GitOps. Hoping t
 - [ ] Integrate with Flux CD
 - [ ] Create Ansible playbooks
 - [ ] Set up SeaweedFS for S3 buckets
-- [ ] Set up Clickhouse for parquent
 - [ ] Tika for PDF parsing
 - [ ] Pangolin blueprints for reverse proxy labeling
 - [ ] Switch to Airflow from Kestra for this stack
 - [ ] Prepare custom Playwright/Python containers and push to ghcr.io
 - [ ] Hoppscotch for API testing
 - [ ] SQL users and tables in Docker init script
-- [ ] Add WikiJS or something for documentation
+- [ ] Add WikiJS or OpenMetadata for documentation
+- [ ] Add to monitoring stack via Alloy
+- [ ] Health checks for containers
+- [ ] Subdomain for stack

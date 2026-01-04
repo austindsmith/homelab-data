@@ -3,13 +3,15 @@ name: data
 volumes:
   postgres_data: {}
   pgadmin_data: {}
+  rustfs_data: {}
+
 networks:
   pangolin:
     external: true
 services:
   postgres:
     container_name: data-postgres
-    image: postgres
+    image: postgres:latest
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
@@ -29,7 +31,7 @@ services:
 
   pgadmin:
     container_name: data-pgadmin4
-    image: dpage/pgadmin4
+    image: dpage/pgadmin4:latest
     environment:
       PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
@@ -39,6 +41,13 @@ services:
     networks:
       - pangolin
     restart: unless-stopped
+    labels:
+      - pangolin.proxy-resources.pgadmin.name=pgAdmin4 - Data
+      - pangolin.proxy-resources.pgadmin.full-domain=pgadmin.${DATA_SUBDOMAIN}
+      - pangolin.proxy-resources.pgadmin.protocol=http
+      - pangolin.proxy-resources.pgadmin.targets[0].method=http
+      - pangolin.proxy-resources.pgadmin.targets[0].port=80
+      - pangolin.proxy-resources.pgadmin.auth.sso-enabled=true
 
   jupyter:
     container_name: data-jupyterlab
@@ -49,3 +58,38 @@ services:
       DOCKER_STACKS_JUPYTER_CMD: lab
     volumes:
       - ${DATA_ROOT}/jupyter:/home/jovyan/work
+    labels:
+      - pangolin.proxy-resources.jupyter.name=JuypyterHub - Data
+      - pangolin.proxy-resources.jupyter.full-domain=jupyter.${DATA_SUBDOMAIN}
+      - pangolin.proxy-resources.jupyter.protocol=http  # REQUIRED
+      - pangolin.proxy-resources.jupyter.targets[0].method=http  # REQUIRED
+      - pangolin.proxy-resources.jupyter.targets[0].port=80
+      - pangolin.proxy-resources.jupyter.auth.sso-enabled=true
+
+  rustfs:
+    security_opt:
+      - "no-new-privileges:true"
+    image: rustfs/rustfs:latest
+    container_name: rustfs-server
+    networks:
+      - pangolin
+    environment:
+      - RUSTFS_VOLUMES=/data/rustfs{0..3} # Define 4 storage volumes
+      - RUSTFS_ADDRESS=0.0.0.0:9000
+      - RUSTFS_CONSOLE_ADDRESS=0.0.0.0:9001
+      - RUSTFS_CONSOLE_ENABLE=true
+      - RUSTFS_EXTERNAL_ADDRESS=:9000 # Same as internal since no port mapping
+      - RUSTFS_CORS_ALLOWED_ORIGINS=*
+      - RUSTFS_CONSOLE_CORS_ALLOWED_ORIGINS=*
+      - RUSTFS_ACCESS_KEY=${RUSTFS_ACCESS_KEY}
+      - RUSTFS_SECRET_KEY=${RUSTFS_SECRET_KEY}
+    volumes:
+      - rustfs_data:/data
+    restart: unless-stopped
+    labels:
+      - pangolin.proxy-resources.rustfs.name=RustFS - Data
+      - pangolin.proxy-resources.rustfs.full-domain=rustfs.${DATA_SUBDOMAIN}
+      - pangolin.proxy-resources.rustfs.protocol=http  # REQUIRED
+      - pangolin.proxy-resources.rustfs.targets[0].method=http  # REQUIRED
+      - pangolin.proxy-resources.rustfs.targets[0].port=9001
+      - pangolin.proxy-resources.rustfs.auth.sso-enabled=true
