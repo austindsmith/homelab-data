@@ -16,3 +16,5 @@ Main goal is to have a full data lakehouse stack that runs from GitOps. Hoping t
 - [ ] Switch to Airflow from Kestra for this stack
 - [ ] Prepare custom Playwright/Python containers and push to ghcr.io
 - [ ] Hoppscotch for API testing
+- [ ] SQL users and tables in Docker init script
+- [ ] Add WikiJS or something for documentation
