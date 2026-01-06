@@ -63,7 +63,7 @@ services:
       - pangolin.proxy-resources.jupyter.full-domain=jupyter.${DATA_SUBDOMAIN}
       - pangolin.proxy-resources.jupyter.protocol=http  # REQUIRED
       - pangolin.proxy-resources.jupyter.targets[0].method=http  # REQUIRED
-      - pangolin.proxy-resources.jupyter.targets[0].port=80
+      - pangolin.proxy-resources.jupyter.targets[0].port=8888
       - pangolin.proxy-resources.jupyter.auth.sso-enabled=true
 
   rustfs:
@@ -93,3 +93,10 @@ services:
       - pangolin.proxy-resources.rustfs.targets[0].method=http  # REQUIRED
       - pangolin.proxy-resources.rustfs.targets[0].port=9001
       - pangolin.proxy-resources.rustfs.auth.sso-enabled=true
+      
+      - pangolin.proxy-resources.rustfs_endpoint.name=RustFS - Data
+      - pangolin.proxy-resources.rustfs_endpoint.full-domain=rustfs-endpoint.${DATA_SUBDOMAIN}
+      - pangolin.proxy-resources.rustfs_endpoint.protocol=http  # REQUIRED
+      - pangolin.proxy-resources.rustfs_endpoint.targets[0].method=http  # REQUIRED
+      - pangolin.proxy-resources.rustfs_endpoint.targets[0].port=9000
+      - pangolin.proxy-resources.rustfs_endpoint.auth.sso-enabled=true

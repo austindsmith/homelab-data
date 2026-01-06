@@ -9,9 +9,9 @@ Main goal is to have a full data lakehouse stack that runs from GitOps. Hoping t
 
 - [ ] Integrate with Flux CD
 - [ ] Create Ansible playbooks
-- [ ] Set up SeaweedFS for S3 buckets
+- [x] Set up RustFS for S3 buckets
 - [ ] Tika for PDF parsing
-- [ ] Pangolin blueprints for reverse proxy labeling
+- [x] Pangolin blueprints for reverse proxy labeling
 - [ ] Switch to Airflow from Kestra for this stack
 - [ ] Prepare custom Playwright/Python containers and push to ghcr.io
 - [ ] Hoppscotch for API testing
@@ -19,4 +19,6 @@ Main goal is to have a full data lakehouse stack that runs from GitOps. Hoping t
 - [ ] Add WikiJS or OpenMetadata for documentation
 - [ ] Add to monitoring stack via Alloy
 - [ ] Health checks for containers
-- [ ] Subdomain for stack
+- [x] Subdomain for stack
+- [ ] Great Expectations
+- [ ] Migrate stack to Kubernetes
