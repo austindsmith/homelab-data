@@ -4,7 +4,8 @@ volumes:
   postgres_data: {}
   pgadmin_data: {}
   rustfs_data: {}
-  postgres-db-volume: {}
+  airflow-postgres-db-volume: {}
+  airflow-postgres-volume: {}
 
 
 networks:
@@ -44,10 +45,10 @@ x-airflow-common:
     # The following line can be used to set a custom config file, stored in the local config folder
     AIRFLOW_CONFIG: '/opt/airflow/config/airflow.cfg'
   volumes:
-    - ${AIRFLOW_PROJ_DIR:-.}/dags:/opt/airflow/dags
-    - ${AIRFLOW_PROJ_DIR:-.}/logs:/opt/airflow/logs
-    - ${AIRFLOW_PROJ_DIR:-.}/config:/opt/airflow/config
-    - ${AIRFLOW_PROJ_DIR:-.}/plugins:/opt/airflow/plugins
+    - airflow-volume/dags:/opt/airflow/dags
+    - airflow-volume/logs:/opt/airflow/logs
+    - airflow-volume/config:/opt/airflow/config
+    - airflow-volume/plugins:/opt/airflow/plugins
   user: "${AIRFLOW_UID:-50000}:0"
   depends_on:
     &airflow-common-depends-on
@@ -166,13 +167,15 @@ services:
       POSTGRES_PASSWORD: airflow
       POSTGRES_DB: airflow
     volumes:
-      - postgres-db-volume:/var/lib/postgresql/data
+      - airflow-postgres-volume:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD", "pg_isready", "-U", "airflow"]
+      test: ["CMD-SHELL", "pg_isready -U airflow -d airflow"]
       interval: 10s
-      retries: 5
-      start_period: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
     restart: always
+
 
   airflow-redis:
     # Redis is limited to 7.2-bookworm due to licencing change
