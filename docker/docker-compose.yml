@@ -20,7 +20,8 @@ x-airflow-common:
   networks: [pangolin]
   # build: .
   env_file:
-    - ${ENV_FILE_PATH:-.env}
+    - ${ENV_FILE_PATH:-/opt/docker-secrets/data.env}
+
   environment:
     &airflow-common-env
     AIRFLOW__CORE__EXECUTOR: CeleryExecutor
