@@ -51,9 +51,9 @@ x-airflow-common:
   user: "${AIRFLOW_UID:-50000}:0"
   depends_on:
     &airflow-common-depends-on
-    redis:
+    airflow-redis:
       condition: service_healthy
-    postgres:
+    airflow-postgres:
       condition: service_healthy
 services:
   postgres:
@@ -74,6 +74,12 @@ services:
       published: ${POSTGRES_PORT:-5432}
       host_ip: ${POSTGRES_BIND_IP:-127.0.0.1}
       protocol: tcp
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
 
 
   pgadmin:
@@ -168,7 +174,7 @@ services:
       start_period: 5s
     restart: always
 
-  redis:
+  airflow-redis:
     # Redis is limited to 7.2-bookworm due to licencing change
     # https://redis.io/blog/redis-adopts-dual-source-available-licensing/
     image: redis:7.2-bookworm
