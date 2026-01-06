@@ -159,7 +159,7 @@ services:
 ### Airflow
 
   airflow-postgres:
-    image: postgres:16
+    image: postgres:16-bookworm
     container_name: airflow-postgres
     networks: [pangolin]
     environment:
@@ -168,6 +168,7 @@ services:
       POSTGRES_DB: airflow
     volumes:
       - airflow-postgres-volume:/var/lib/postgresql/data
+    command: ["/usr/lib/postgresql/16/bin/postgres"]
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U airflow -d airflow"]
       interval: 10s
@@ -175,6 +176,7 @@ services:
       retries: 10
       start_period: 20s
     restart: always
+
 
 
   airflow-redis:
