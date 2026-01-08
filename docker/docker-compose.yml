@@ -168,7 +168,6 @@ services:
       POSTGRES_DB: airflow
     volumes:
       - airflow-postgres-volume:/var/lib/postgresql/data
-    command: ["/usr/lib/postgresql/16/bin/postgres"]
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U airflow -d airflow"]
       interval: 10s
